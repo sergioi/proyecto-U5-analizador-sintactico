@@ -153,13 +153,166 @@ def p_expresion_logicas(t):
         t[0] = t[2] != t[4]
 
 
+def p_expresion_numero(t):
+    'expresion : ENTERO'
+    t[0] = t[1]
 
 
-#incio de geo (eliminar comentario) //////////////////////////////////////////////////////////////////////////////////////////
+def p_expresion_decimal(t):
+    'expresion : DECIMAL'
+    t[0] = t[1]
+
+
+# def p_expresion_cadena(t):
+   # 'expresion : COMDOB expresion COMDOB'
+   # t[0] = t[2]
+
+
+def p_expresion_nombre(t):
+    'expresion : VARIABLE'
+    try:
+        t[0] = nombres[t[1]]
+    except LookupError:
+        print("---------------------------------------------")
+        print("SINTAXIS ERROR ")
+        print("--------------------------------------------")
+        print("")
+        print("VERIFICAR: ", t[1])
+        print("¿verificar si se definio o asigno un valor(en caso de operacion arimetica)?")
+        t[0] = 0
+        print("---------------------------------------------")
+
+
+def p_error(t):
+    global resultado_gramatica
+    if t:
+        # type: es para el tipo
+        # value:valor que hace que falle
+        # lineno: es para que linea pertenece
+        # lexpos: para la posicion donde se encuentra
+        resultado = "Error sintactico de tipo {:4} en el valor {:4}".format(
+            str(t.type), str(t.value))
+       # print("SINTAXIS ERROR")
+       # print(resultado)
+    else:
+        resultado = "Error sintactico {}".format(t)
+       # print(resultado)
+    resultado_gramatica.append(resultado)
+
+
+# instanciamos el analizador sistactico
+parser = yacc.yacc()
+
+
+def prueba_sintactica(data):
+    global resultado_gramatica
+   # resultado_gramatica.clear()
+
+    for item in data.splitlines():
+        if item:
+            gram = parser.parse(item)
+            if gram:
+                resultado_gramatica.append(str(gram))
+        else:
+            print("")
+    #print("result: ", resultado_gramatica)
+    return resultado_gramatica
+def p_expresion_numero(t):
+    'expresion : ENTERO'
+    t[0] = t[1]
+
+
+def p_expresion_decimal(t):
+    'expresion : DECIMAL'
+    t[0] = t[1]
+
+
+# def p_expresion_cadena(t):
+   # 'expresion : COMDOB expresion COMDOB'
+   # t[0] = t[2]
+
+
+def p_expresion_nombre(t):
+    'expresion : VARIABLE'
+    try:
+        t[0] = nombres[t[1]]
+    except LookupError:
+        print("---------------------------------------------")
+        print("SINTAXIS ERROR ")
+        print("--------------------------------------------")
+        print("")
+        print("VERIFICAR: ", t[1])
+        print("¿verificar si se definio o asigno un valor(en caso de operacion arimetica)?")
+        t[0] = 0
+        print("---------------------------------------------")
 
 
 
+def p_error(t):
+    global resultado_gramatica
+    if t:
+        # type: es para el tipo
+        # value:valor que hace que falle
+        # lineno: es para que linea pertenece
+        # lexpos: para la posicion donde se encuentra
+        resultado = "Error sintactico de tipo {:4} en el valor {:4}".format(
+            str(t.type), str(t.value))
+       # print("SINTAXIS ERROR")
+       # print(resultado)
+    else:
+        resultado = "Error sintactico {}".format(t)
+       # print(resultado)
+    resultado_gramatica.append(resultado)
 
-# fin de geo (elimianr comentrario)/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# instanciamos el analizador sistactico
+parser = yacc.yacc()
+
+
+def prueba_sintactica(data):
+    global resultado_gramatica
+   # resultado_gramatica.clear()
+
+    for item in data.splitlines():
+        if item:
+            gram = parser.parse(item)
+            if gram:
+                resultado_gramatica.append(str(gram))
+        else:
+            print("")
+    #print("result: ", resultado_gramatica)
+    return resultado_gramatica
+
+
+path = "index.php"
+
+try:
+    archivo = open(path, 'r')
+except:
+    print("el archivo no se encontro")
+    quit()
+
+text = ""
+for linea in archivo:
+    text += linea
+
+print('-------------------------------------------------')
+print(" ____    _   _   ____")
+print("|  _ \  | | | | |  _ \ ")
+print("| |_) | | |_| | | |_) |")
+print("|  __/  |  _  | |  __/ ")
+print("|_|     |_| |_| |_|")
+print('-------------------------------------------------')
+
+#if 2 == 2:
+# print("")
+# print('-------------------------------------------------')
+#print("         COMPILACION EXITOSA")
+# print('-------------------------------------------------')
+prueba_sintactica(text)
+print('------    RESULADOS OBTENIDOS     ---------------')
+print('-------------------------------------------------')
+print('\n'.join(list(map(''.join, resultado_gramatica))))
+print('-------------------------------------------------')
 
 
