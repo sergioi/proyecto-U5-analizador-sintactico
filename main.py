@@ -50,11 +50,63 @@ def p_declaracion_asignar(t):
 
 
 
-#inicion kauil (eliminar comentario)///////////////////////////////////////////////////////////////////////////////////////
+def p_expresion_uminus(t):
+    'expresion : RESTA expresion %prec UMINUS'
+    t[0] = -t[2]
+
+
+def p_expresion_grupo(t):
+    '''
+    expresion  : PARIZQ expresion PARDER 
+                | LLAIZQ expresion LLADER
+                | CORIZQ expresion CORDER
+
+    '''
+    t[0] = t[2]
 
 
 
-# fin kauil (eliminar comentario cuando subas)/////////////////////////////////////////////////////////////////////////////////
+
+    
+def p_expresion_logicas(t):
+    '''
+    expresion   :  expresion MENORQUE expresion 
+                |  expresion MAYORQUE expresion 
+                |  expresion MENORIGUAL expresion 
+                |   expresion MAYORIGUAL expresion 
+                |   expresion IGUAL expresion 
+                |   expresion DISTINTO expresion
+                |  PARIZQ expresion PARDER MENORQUE PARIZQ expresion PARDER
+                |  PARIZQ expresion PARDER MAYORQUE PARIZQ expresion PARDER
+                |  PARIZQ expresion PARDER MENORIGUAL PARIZQ expresion PARDER 
+                |  PARIZQ  expresion PARDER MAYORIGUAL PARIZQ expresion PARDER
+                |  PARIZQ  expresion PARDER IGUAL PARIZQ expresion PARDER
+                |  PARIZQ  expresion PARDER DISTINTO PARIZQ expresion PARDER
+    '''
+    if t[2] == "<":
+        t[0] = t[1] < t[3]
+    elif t[2] == ">":
+        t[0] = t[1] > t[3]
+    elif t[2] == "<=":
+        t[0] = t[1] <= t[3]
+    elif t[2] == ">=":
+        t[0] = t[1] >= t[3]
+    elif t[2] == "==":
+        t[0] = t[1] is t[3]
+    elif t[2] == "!=":
+        t[0] = t[1] != t[3]
+    elif t[3] == "<":
+        t[0] = t[2] < t[4]
+    elif t[2] == ">":
+        t[0] = t[2] > t[4]
+    elif t[3] == "<=":
+        t[0] = t[2] <= t[4]
+    elif t[3] == ">=":
+        t[0] = t[2] >= t[4]
+    elif t[3] == "==":
+        t[0] = t[2] is t[4]
+    elif t[3] == "!=":
+        t[0] = t[2] != t[4]
 
 
 
